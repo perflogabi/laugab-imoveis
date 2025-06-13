@@ -209,7 +209,15 @@ export default function AluguelPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
           <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-xs mx-auto">
             <h3 className="text-lg font-bold mb-4">Faixa de Preço</h3>
-            <form onSubmit={e => { e.preventDefault(); handlePrecoSelect(Number((e.target as any).min.value), Number((e.target as any).max.value)); }}>
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                const form = e.target as HTMLFormElement;
+                const min = (form.elements.namedItem('min') as HTMLInputElement)?.value;
+                const max = (form.elements.namedItem('max') as HTMLInputElement)?.value;
+                handlePrecoSelect(Number(min), Number(max));
+              }}
+            >
               <div className="flex gap-2 mb-4">
                 <input name="min" type="number" min={0} placeholder="Mínimo" className="w-1/2 rounded border px-2 py-1" defaultValue={filtros.minPrice || ''} />
                 <input name="max" type="number" min={0} placeholder="Máximo" className="w-1/2 rounded border px-2 py-1" defaultValue={filtros.maxPrice || ''} />

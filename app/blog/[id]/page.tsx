@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { CalendarIcon, ArrowLeft } from 'lucide-react';
+import Image from 'next/image';
 
 const blogPosts = [
   {
@@ -101,7 +102,13 @@ export default function BlogPostPage() {
           <ArrowLeft className="h-4 w-4" /> Voltar
         </button>
         <div className="mb-6">
-          <img src={post.imageUrl} alt={post.title} className="rounded-lg w-full h-64 object-cover mb-4" />
+          <Image
+            src={post.imageUrl}
+            alt={post.title}
+            width={800}
+            height={256}
+            className="rounded-lg w-full h-64 object-cover mb-4"
+          />
           <div className="flex items-center gap-2 mb-2">
             <span className="inline-block px-2 py-1 rounded bg-blue-600 text-white text-xs font-semibold">{post.category}</span>
             <span className="flex items-center text-xs text-gray-500">

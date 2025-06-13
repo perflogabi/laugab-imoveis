@@ -71,7 +71,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
       setEmail("");
       setPhone("");
       setContactMethod("");
-    } catch (err) {
+    } catch {
       setErrors({ form: "Erro ao enviar. Tente novamente." });
     } finally {
       setLoading(false);
