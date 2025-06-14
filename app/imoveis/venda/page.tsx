@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { PropertyCard } from '@/components/property-card';
 import { PropertySearchBar } from './PropertySearchBar';
 import { PropertyFiltersDrawer } from './PropertyFiltersDrawer';
-import propertiesVenda, { propertyImages } from './propertiesVenda';
+import propertiesVenda from './propertiesVenda';
 
 const tipos = ["Casa", "Apartamento", "Cobertura", "Studio"];
 const localizacoes = Array.from(new Set(propertiesVenda.map(p => p.address.split(',')[0].trim())));

@@ -4,7 +4,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
-export default function PropertyDetailsClient({ property }: { property: any }) {
+interface Property {
+  id: string;
+  title: string;
+  address: string;
+  price: number;
+  bedrooms: number;
+  bathrooms: number;
+  area: number;
+  imageUrl: string;
+}
+
+export default function PropertyDetailsClient({ property }: { property: Property }) {
   const formattedPrice = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
@@ -74,9 +85,11 @@ export default function PropertyDetailsClient({ property }: { property: any }) {
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-4">Localização</h2>
         <div className="rounded-lg overflow-hidden border w-full h-72 flex flex-col items-center justify-center">
-          <img
+          <Image
             src="https://static-maps.yandex.ru/1.x/?lang=pt_BR&ll=-46.753682,-23.609994&z=15&l=map&size=600,300&pt=-46.753682,-23.609994,pm2rdm"
             alt="Mapa estático do imóvel no Morumbi"
+            width={600}
+            height={300}
             className="w-full h-72 object-cover"
             loading="lazy"
           />

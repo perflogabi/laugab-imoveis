@@ -17,7 +17,7 @@ const icon = L.icon({
 export default function PropertyMap() {
   // Corrige bug do leaflet no SSR
   useEffect(() => {
-    // @ts-ignore
+    // @ts-expect-error
     delete L.Icon.Default.prototype._getIconUrl;
     L.Icon.Default.mergeOptions({
       iconRetinaUrl: icon.options.iconUrl,
