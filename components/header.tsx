@@ -145,7 +145,7 @@ export function Header() {
               </svg>
               WhatsApp
             </a>
-            </nav>
+          </nav>
             <Button variant="outline" size="icon" asChild aria-label="Buscar">
               <Link href="/busca">
                 <Search className="h-5 w-5" />

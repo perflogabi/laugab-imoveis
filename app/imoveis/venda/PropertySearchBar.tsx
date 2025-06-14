@@ -11,7 +11,7 @@ interface PropertySearchBarProps {
 export function PropertySearchBar({ value, onChange, onSearch, onOpenFilters }: PropertySearchBarProps) {
   return (
     <form
-      className="flex w-full max-w-3xl mx-auto mb-8 bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden transition-all"
+      className="flex flex-row w-full max-w-[400px] md:max-w-[580px] mx-auto mb-8 bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden transition-all"
       role="search"
       onSubmit={e => { e.preventDefault(); onSearch(); }}
     >
@@ -21,23 +21,23 @@ export function PropertySearchBar({ value, onChange, onSearch, onOpenFilters }: 
         onChange={e => onChange(e.target.value)}
         placeholder="Busque por localização e tipo de imóvel"
         aria-label="Buscar por localização e tipo de imóvel"
-        className="flex-1 px-6 py-4 text-lg focus:outline-none focus:ring-2 focus:ring-primary bg-gray-50 placeholder:text-gray-400"
+        className="flex-1 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-primary bg-gray-50 placeholder:text-gray-400 border-0"
       />
       <button
         type="button"
         onClick={onOpenFilters}
         aria-label="Abrir filtros avançados"
-        className="px-5 border-l border-gray-200 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
+        className="flex items-center justify-center px-4 py-3 border-l border-gray-200 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
       >
         <SlidersHorizontal className="h-6 w-6 text-gray-500" />
       </button>
       <button
         type="submit"
-        className="flex items-center gap-2 px-6 py-4 bg-yellow-400 hover:bg-yellow-500 text-lg font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary transition-all md:rounded-none rounded-r-2xl md:w-auto w-full"
+        className="flex items-center justify-center px-4 py-3 bg-yellow-400 hover:bg-yellow-500 text-lg cursor-pointer font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary transition-all border-l border-gray-200 rounded-none md:rounded-r-2xl h-full min-w-[48px] md:min-w-[auto]"
         aria-label="Buscar imóveis"
       >
         <Search className="h-6 w-6" />
-        <span className="hidden sm:inline">Buscar Imóveis</span>
+        <span className="hidden md:inline ml-2">Buscar Imóveis</span>
       </button>
     </form>
   );
