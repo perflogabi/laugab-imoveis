@@ -175,7 +175,7 @@ export default function VendaPage() {
         <p className="text-center text-gray-500 mt-8" role="status">Nenhum imóvel encontrado com os filtros selecionados.</p>
       ) : (
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8" aria-live="polite">
-          {filteredProperties.map(({ id, title, price, type, kind, address, bedrooms, bathrooms, area, imageUrl, featured }) => (
+          {filteredProperties.map(({ id, title, price, type, address, bedrooms, bathrooms, area, imageUrl, featured }) => (
             <li key={id} className="list-none">
               <PropertyCard 
                 id={id}
