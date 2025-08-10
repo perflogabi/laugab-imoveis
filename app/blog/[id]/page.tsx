@@ -1,9 +1,6 @@
-'use client';
-
+import { Metadata } from 'next';
 import React from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import { Header } from '@/components/header';
-import { Footer } from '@/components/footer';
+import Link from 'next/link';
 import { CalendarIcon, ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 
@@ -70,37 +67,104 @@ const blogPosts = [
   },
 ];
 
-export default function BlogPostPage() {
-  const router = useRouter();
-  const params = useParams();
-  const { id } = params;
+interface BlogPostPageProps {
+  params: Promise<{ id: string }>;
+}
+
+export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
+  const { id } = await params;
+  const post = blogPosts.find((p) => p.id === id);
+  
+  if (!post) {
+    return {
+      title: 'Post não encontrado | Blog Laugab Imobiliária',
+      description: 'O post que você está procurando não foi encontrado. Explore outros artigos do nosso blog sobre mercado imobiliário.',
+    };
+  }
+
+  return {
+    title: `${post.title} | Blog Laugab Imobiliária`,
+    description: post.excerpt,
+    keywords: [
+      'blog',
+      'imobiliária',
+      post.category.toLowerCase(),
+      'Laugab Imobiliária',
+      'mercado imobiliário',
+      'dicas'
+    ].join(', '),
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      type: 'article',
+      url: `https://laugabimobiliaria.vercel.app/blog/${post.id}`,
+      images: [
+        {
+          url: post.imageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+      siteName: 'Laugab Imobiliária',
+      locale: 'pt_BR',
+      publishedTime: post.date,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
+      images: [post.imageUrl],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+    alternates: {
+      canonical: `https://laugabimobiliaria.vercel.app/blog/${post.id}`,
+    },
+  };
+}
+
+export async function generateStaticParams() {
+  return blogPosts.map((post) => ({
+    id: post.id,
+  }));
+}
+
+export default async function BlogPostPage({ params }: BlogPostPageProps) {
+  const { id } = await params;
   const post = blogPosts.find((p) => p.id === id);
 
   if (!post) {
     return (
       <>
-        <Header />
         <div className="container mx-auto px-4 py-16 text-center">
           <h1 className="text-2xl font-bold mb-4">Notícia não encontrada</h1>
-          <button onClick={() => router.back()} className="inline-flex items-center gap-2 px-4 py-2 rounded bg-blue-900 text-white font-bold hover:bg-blue-800">
-            <ArrowLeft className="h-4 w-4" /> Voltar
-          </button>
+          <Link href="/blog" className="inline-flex items-center gap-2 px-4 py-2 rounded bg-blue-900 text-white font-bold hover:bg-blue-800">
+            <ArrowLeft className="h-4 w-4" /> Voltar ao Blog
+          </Link>
         </div>
-        <Footer />
       </>
     );
   }
 
   return (
     <>
-      <Header />
       <div className="container mx-auto px-4 py-8 max-w-2xl">
-        <button
-          onClick={() => router.back()}
+        <Link
+          href="/blog"
           className="inline-flex items-center gap-2 px-3 py-2 mb-6 rounded bg-gray-100 hover:bg-gray-200 cursor-pointer text-gray-700 font-medium"
         >
-          <ArrowLeft className="h-4 w-4" /> Voltar
-        </button>
+          <ArrowLeft className="h-4 w-4" /> Voltar ao Blog
+        </Link>
         <div className="mb-6">
           <Image
             src={post.imageUrl}
@@ -123,7 +187,6 @@ export default function BlogPostPage() {
           {post.content}
         </article>
       </div>
-      <Footer />
     </>
   );
 } 

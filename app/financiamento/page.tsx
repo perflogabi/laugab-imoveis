@@ -1,13 +1,28 @@
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
+import { Metadata } from 'next';
 import { ContactForm } from "@/components/ui/ContactForm";
 import FinanciamentoVantagens from "@/components/FinanciamentoVantagens";
 import { SectionBannerSimular } from "@/components/FinanciamentoComoFunciona";
 
+export const metadata: Metadata = {
+  title: 'Financiamento Imobiliário | Laugab Imobiliária',
+  description: 'Financiamento imobiliário com as melhores condições do mercado. Simule seu financiamento, compare taxas e realize o sonho da casa própria com a Laugab Imobiliária.',
+  keywords: 'financiamento, imobiliário, casa própria, crédito, simulação, Laugab Imobiliária',
+  openGraph: {
+    title: 'Financiamento Imobiliário | Laugab Imobiliária',
+    description: 'Financiamento imobiliário com as melhores condições do mercado. Simule seu financiamento e realize o sonho da casa própria.',
+    type: 'website',
+    url: 'https://laugabimobiliaria.vercel.app/financiamento',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Financiamento Imobiliário | Laugab Imobiliária',
+    description: 'Financiamento imobiliário com as melhores condições do mercado.',
+  },
+};
+
 export default function FinanciamentoPage() {
   return (
     <div className="flex flex-col min-h-screen bg-blue-50">
-      <Header />
       <main className="flex flex-col gap-12 flex-1">
         {/* Banner com formulário */}
         <section
@@ -47,7 +62,6 @@ export default function FinanciamentoPage() {
         {/* Como funciona */}
         {/* <SectionComoFunciona /> */}
       </main>
-      <Footer />
     </div>
   );
 } 

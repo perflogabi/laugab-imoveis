@@ -1,15 +1,12 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useCallback, useMemo } from "react"
 import Image from "next/image"
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-
-// Carrossel de depoimentos com foco em acessibilidade e responsividade
-// Exibe depoimentos de clientes com navegação por botões e indicadores
 
 // Dados simulados para demonstração
 const testimonials = [
@@ -55,16 +52,68 @@ const testimonials = [
   },
 ]
 
+// Componente otimizado para indicadores
+const CarouselIndicators = ({ 
+  total, 
+  current, 
+  onSelect 
+}: { 
+  total: number
+  current: number
+  onSelect: (index: number) => void 
+}) => {
+  return (
+    <div className="flex justify-center gap-2 mt-4">
+      {Array.from({ length: total }, (_, index) => (
+        <button
+          key={index}
+          className={cn(
+            "w-11 h-11 flex items-center justify-center rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600",
+            index === current ? "bg-green-600" : "bg-green-200"
+          )}
+          style={{ minWidth: 44, minHeight: 44 }}
+          onClick={() => onSelect(index)}
+          aria-label={`Ver depoimento ${index + 1}`}
+          tabIndex={0}
+        />
+      ))}
+    </div>
+  )
+}
+
+// Componente otimizado para avatar
+const TestimonialAvatar = ({ src, alt }: { src: string; alt: string }) => {
+  return (
+    <div className="relative w-12 h-12 rounded-full overflow-hidden mb-1 border-2 border-green-600">
+      <Image
+        src={src || "/placeholder.svg"}
+        alt={alt}
+        fill
+        className="object-cover"
+        sizes="(max-width: 480px) 40px, (max-width: 640px) 48px, 80px"
+        loading="lazy"
+        fetchPriority="auto"
+      />
+    </div>
+  )
+}
+
 export function TestimonialCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0)
 
-  const nextTestimonial = () => {
+  const nextTestimonial = useCallback(() => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length)
-  }
+  }, [])
 
-  const prevTestimonial = () => {
+  const prevTestimonial = useCallback(() => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length)
-  }
+  }, [])
+
+  const selectTestimonial = useCallback((index: number) => {
+    setCurrentIndex(index)
+  }, [])
+
+  const currentTestimonial = useMemo(() => testimonials[currentIndex], [currentIndex])
 
   return (
     <section
@@ -73,6 +122,7 @@ export function TestimonialCarousel() {
       className="relative flex justify-center items-center py-8 md:py-12"
     >
       <h2 id="testimonial-carousel-title" className="sr-only">Depoimentos de clientes</h2>
+      
       <Button
         variant="outline"
         size="icon"
@@ -83,46 +133,39 @@ export function TestimonialCarousel() {
         <ChevronLeft className="h-6 w-6" />
         <span className="sr-only">Depoimento anterior</span>
       </Button>
+      
       <div className="w-full max-w-xl mx-auto">
         <Card className="shadow-lg border border-gray-100 bg-white">
           <CardContent className="p-6 md:p-8 flex flex-col items-center text-center">
             <Quote className="h-8 w-8 text-green-600 mb-4" />
-            <p className="text-base md:text-lg mb-4 max-w-lg text-foreground" aria-live="polite">
-              {testimonials[currentIndex].content}
+            <p 
+              className="text-base md:text-lg mb-4 max-w-lg text-foreground" 
+              aria-live="polite"
+            >
+              {currentTestimonial.content}
             </p>
             <div className="flex flex-col items-center gap-1 mt-2">
-              <div className="relative w-12 h-12 rounded-full overflow-hidden mb-1 border-2 border-green-600">
-                    <Image
-                      src={testimonials[currentIndex].avatar || "/placeholder.svg"}
-                      alt={testimonials[currentIndex].name}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 480px) 40px, (max-width: 640px) 48px, 80px"
-                      loading="lazy"
-                      fetchPriority="auto"
-                    />
-                  </div>
-              <h3 className="font-semibold text-base text-green-700">{testimonials[currentIndex].name}</h3>
-              <p className="text-xs text-muted-foreground">{testimonials[currentIndex].role}</p>
-              </div>
-            </CardContent>
-          </Card>
-        <div className="flex justify-center gap-2 mt-4">
-        {testimonials.map((_, index) => (
-          <button
-            key={index}
-            className={cn(
-                "w-11 h-11 flex items-center justify-center rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600",
-                index === currentIndex ? "bg-green-600" : "bg-green-200"
-            )}
-              style={{ minWidth: 44, minHeight: 44 }}
-            onClick={() => setCurrentIndex(index)}
-            aria-label={`Ver depoimento ${index + 1}`}
-              tabIndex={0}
-          />
-        ))}
-        </div>
+              <TestimonialAvatar 
+                src={currentTestimonial.avatar} 
+                alt={currentTestimonial.name} 
+              />
+              <h3 className="font-semibold text-base text-green-700">
+                {currentTestimonial.name}
+              </h3>
+              <p className="text-xs text-muted-foreground">
+                {currentTestimonial.role}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <CarouselIndicators 
+          total={testimonials.length}
+          current={currentIndex}
+          onSelect={selectTestimonial}
+        />
       </div>
+      
       <Button
         variant="outline"
         size="icon"

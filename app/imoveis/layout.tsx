@@ -3,9 +3,6 @@ import type { Metadata } from "next"
 import { Inter as FontSans } from "next/font/google"
 import "../globals.css"
 import { cn } from "@/lib/utils"
-import { ThemeProvider } from "@/components/theme-provider"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -25,12 +22,8 @@ export default function ImoveisLayout({
   children: React.ReactNode
 }>) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-      <div className={cn(fontSans.variable, "w-full flex min-h-screen flex-col bg-background font-sans antialiased")}> 
-        <Header />
-        <main className="w-full px-4 md:px-8 lg:px-24">{children}</main>
-        <Footer />
-      </div>
-    </ThemeProvider>
+    <div className={cn(fontSans.variable, "w-full flex min-h-screen flex-col bg-background font-sans antialiased")}> 
+      <main className="w-full px-4 md:px-8 lg:px-24">{children}</main>
+    </div>
   )
 }

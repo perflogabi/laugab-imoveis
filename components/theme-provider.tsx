@@ -29,21 +29,37 @@ export const ThemeProvider = ({
   children,
   defaultTheme = "light",
 }: ThemeProviderProps) => {
-  const [theme, setTheme] = useState<"light" | "dark">(() => {
-    if (typeof window !== "undefined") {
-      return (localStorage.getItem("theme") as "light" | "dark") || defaultTheme
-    }
-    return defaultTheme
-  })
+  const [theme, setTheme] = useState<"light" | "dark">(defaultTheme)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    document.documentElement.classList.remove(theme === "light" ? "dark" : "light")
-    document.documentElement.classList.add(theme)
-    localStorage.setItem("theme", theme)
+    setMounted(true)
+    // Só acessa localStorage após a montagem do componente
+    const savedTheme = localStorage.getItem("theme") as "light" | "dark"
+    if (savedTheme && savedTheme !== theme) {
+      setTheme(savedTheme)
+    }
   }, [theme])
+
+  useEffect(() => {
+    if (mounted) {
+      document.documentElement.classList.remove(theme === "light" ? "dark" : "light")
+      document.documentElement.classList.add(theme)
+      localStorage.setItem("theme", theme)
+    }
+  }, [theme, mounted])
 
   const toggleTheme = () => {
     setTheme((prev) => (prev === "light" ? "dark" : "light"))
+  }
+
+  // Evita renderização diferente no servidor vs cliente
+  if (!mounted) {
+    return (
+      <ThemeContext.Provider value={{ theme: defaultTheme, toggleTheme }}>
+        {children}
+      </ThemeContext.Provider>
+    )
   }
 
   return (

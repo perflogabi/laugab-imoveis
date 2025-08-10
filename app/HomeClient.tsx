@@ -4,21 +4,80 @@ import Link from "next/link"
 import { ArrowRight, Building, HomeIcon, MapPin } from "lucide-react"
 import dynamic from "next/dynamic"
 import { Suspense } from "react"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { AboutLaugab } from "@/components/AboutLaugab"
 import Image from "next/image"
 
-const FeaturedProperties = dynamic(() => import("@/components/featured-properties").then(m => m.FeaturedProperties), { ssr: false, loading: () => <div style={{height: 320}} className="w-full flex items-center justify-center text-muted-foreground">Carregando imóveis em destaque...</div> })
-const TestimonialCarousel = dynamic(() => import("@/components/testimonial-carousel").then(m => m.TestimonialCarousel), { ssr: false, loading: () => <div style={{height: 180}} className="w-full flex items-center justify-center text-muted-foreground">Carregando depoimentos...</div> })
-const BlogPreview = dynamic(() => import("@/components/blog-preview").then(m => m.BlogPreview), { ssr: false, loading: () => <div style={{height: 320}} className="w-full flex items-center justify-center text-muted-foreground">Carregando blog...</div> })
+// Carregamento lazy otimizado dos componentes
+const FeaturedProperties = dynamic(
+  () => import("@/components/featured-properties").then(m => ({ default: m.FeaturedProperties })), 
+  { 
+    ssr: true, 
+    loading: () => (
+      <div className="w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="animate-pulse">
+              <div className="bg-gray-200 rounded-lg h-64 mb-4"></div>
+              <div className="space-y-2">
+                <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+)
+
+const TestimonialCarousel = dynamic(
+  () => import("@/components/testimonial-carousel").then(m => ({ default: m.TestimonialCarousel })), 
+  { 
+    ssr: true, 
+    loading: () => (
+      <div className="w-full max-w-xl mx-auto">
+        <div className="animate-pulse">
+          <div className="bg-gray-200 rounded-lg h-48 mb-4"></div>
+          <div className="flex justify-center gap-2">
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className="w-11 h-11 bg-gray-200 rounded-full"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
+)
+
+const BlogPreview = dynamic(
+  () => import("@/components/blog-preview").then(m => ({ default: m.BlogPreview })), 
+  { 
+    ssr: true, 
+    loading: () => (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {[...Array(3)].map((_, i) => (
+          <div key={i} className="animate-pulse">
+            <div className="bg-gray-200 rounded-lg h-48 mb-4"></div>
+            <div className="space-y-2">
+              <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+              <div className="h-6 bg-gray-200 rounded w-3/4"></div>
+              <div className="h-4 bg-gray-200 rounded w-full"></div>
+              <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+  }
+)
 
 export default function HomeClient() {
   return (
     <>
-      <Header />
       <section className="relative w-full md:w-[80%] mx-auto rounded-b-2xl">
         <div className="relative h-[400px] md:h-[600px] rounded-b-2xl rounded-t-2xl overflow-hidden">
           <Image
@@ -56,29 +115,6 @@ export default function HomeClient() {
       <AboutLaugab />
 
       <main className="w-full max-w-7xl mx-auto px-4 md:px-6">
-        {/* <section className="py-8 md:py-16 w-full">
-          <div className="flex justify-center">
-            <div className="bg-card rounded-xl shadow-lg -mt-16 md:-mt-24 relative z-30 max-w-5xl w-full mx-auto">
-              <Tabs defaultValue="comprar" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 h-auto p-1 md:p-2">
-                  <TabsTrigger value="comprar" className="py-3 md:py-4 text-lg cursor-pointer">
-                    Comprar
-                  </TabsTrigger>
-                  <TabsTrigger value="alugar" className="py-3 md:py-4 text-lg cursor-pointer">
-                    Alugar
-                  </TabsTrigger>
-                </TabsList>
-                <TabsContent value="comprar" className="p-4 md:p-6">
-                  <PropertySearch type="venda" />
-                </TabsContent>
-                <TabsContent value="alugar" className="p-4 md:p-6">
-                  <PropertySearch type="aluguel" />
-                </TabsContent>
-              </Tabs>
-            </div>
-          </div>
-        </section> */}
-
         <section className="py-8 md:py-24 w-full">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10">
             <div>
@@ -88,7 +124,22 @@ export default function HomeClient() {
               </p>
             </div>
           </div>
-          <Suspense fallback={<div style={{height:320}} className="w-full flex items-center justify-center text-muted-foreground">Carregando imóveis em destaque...</div>}>
+          <Suspense fallback={
+            <div className="w-full">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[...Array(6)].map((_, i) => (
+                  <div key={i} className="animate-pulse">
+                    <div className="bg-gray-200 rounded-lg h-64 mb-4"></div>
+                    <div className="space-y-2">
+                      <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                      <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                      <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          }>
             <FeaturedProperties />
           </Suspense>
         </section>
@@ -102,69 +153,74 @@ export default function HomeClient() {
                 atendimento personalizado.
               </p>
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 px-4 lg:grid-cols-3 gap-8">
-              <Card className="bg-background">
-                <CardContent className="pt-6">
-                  <div className="rounded-full bg-primary/10 w-12 h-12 flex items-center justify-center mb-4">
-                    <Building className="h-6 w-6 text-green-600" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+              <Card className="text-center p-6 border-0 shadow-lg bg-white">
+                <CardContent className="p-0">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Building className="h-8 w-8 text-green-600" />
                   </div>
-                  <h3 className="text-lg md:text-xl font-semibold mb-2">Amplo Portfólio</h3>
-                  <p className="text-muted-foreground">
-                    Milhares de imóveis disponíveis para compra e aluguel em todo o Brasil, com opções para todos os
-                    perfis e orçamentos.
+                  <h3 className="text-lg font-semibold mb-2">Ampla Variedade</h3>
+                  <p className="text-muted-foreground text-sm">
+                    Milhares de imóveis disponíveis para compra e aluguel em todo o Brasil.
                   </p>
                 </CardContent>
               </Card>
-
-              <Card className="bg-background">
-                <CardContent className="pt-6">
-                  <div className="rounded-full bg-primary/10 w-12 h-12 flex items-center justify-center mb-4">
-                    <HomeIcon className="h-6 w-6 text-green-600" />
+              <Card className="text-center p-6 border-0 shadow-lg bg-white">
+                <CardContent className="p-0">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <MapPin className="h-8 w-8 text-green-600" />
                   </div>
-                  <h3 className="text-lg md:text-xl font-semibold mb-2">Atendimento Personalizado</h3>
-                  <p className="text-muted-foreground">
-                    Nossos corretores são especializados em encontrar o imóvel perfeito para você, com atendimento
-                    exclusivo e personalizado.
+                  <h3 className="text-lg font-semibold mb-2">Localização Estratégica</h3>
+                  <p className="text-muted-foreground text-sm">
+                    Imóveis em bairros nobres e regiões em desenvolvimento.
                   </p>
                 </CardContent>
               </Card>
-
-              <Card className="bg-background">
-                <CardContent className="pt-6">
-                  <div className="rounded-full bg-primary/10 w-12 h-12 flex items-center justify-center mb-4">
-                    <MapPin className="h-6 w-6 text-green-600" />
+              <Card className="text-center p-6 border-0 shadow-lg bg-white">
+                <CardContent className="p-0">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <HomeIcon className="h-8 w-8 text-green-600" />
                   </div>
-                  <h3 className="text-lg md:text-xl font-semibold mb-2">Localização Estratégica</h3>
-                  <p className="text-muted-foreground">
-                    Imóveis nas melhores localizações, com fácil acesso a transporte, comércio, escolas e áreas de lazer.
+                  <h3 className="text-lg font-semibold mb-2">Atendimento Personalizado</h3>
+                  <p className="text-muted-foreground text-sm">
+                    Nossa equipe especializada está sempre pronta para ajudar você.
                   </p>
                 </CardContent>
               </Card>
-            </div>
-
-            <div className="text-center mt-12">
-              <Button
-                size="lg"
-                variant="secondary"
-                asChild
-                className="w-full sm:w-auto min-h-[48px] min-w-[48px] px-6 py-4 bg-white text-[#007a68] font-bold border border-[#007a68] hover:bg-[#e6f4ea] focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-300 transition"
-                aria-label="Conheça nossa história"
-              >
-                <Link href="/sobre">Conheça Nossa História</Link>
-              </Button>
+              <Card className="text-center p-6 border-0 shadow-lg bg-white">
+                <CardContent className="p-0">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <ArrowRight className="h-8 w-8 text-green-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">Processo Simplificado</h3>
+                  <p className="text-muted-foreground text-sm">
+                    Documentação e procedimentos burocráticos facilitados.
+                  </p>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </section>
 
         <section className="py-8 md:py-24 w-full">
           <div className="text-center max-w-3xl mx-auto mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">O que nossos clientes dizem</h2>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">Depoimentos de Clientes</h2>
             <p className="text-muted-foreground mt-4">
-              A satisfação dos nossos clientes é nossa maior conquista. Confira alguns depoimentos.
+              Veja o que nossos clientes dizem sobre a Laugab Imobiliária
             </p>
           </div>
-          <Suspense fallback={<div style={{height:180}} className="w-full flex items-center justify-center text-muted-foreground">Carregando depoimentos...</div>}>
+          <Suspense fallback={
+            <div className="w-full max-w-xl mx-auto">
+              <div className="animate-pulse">
+                <div className="bg-gray-200 rounded-lg h-48 mb-4"></div>
+                <div className="flex justify-center gap-2">
+                  {[...Array(5)].map((_, i) => (
+                    <div key={i} className="w-11 h-11 bg-gray-200 rounded-full"></div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          }>
             <TestimonialCarousel />
           </Suspense>
         </section>
@@ -172,53 +228,37 @@ export default function HomeClient() {
         <section className="py-8 md:py-24 w-full">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10">
             <div>
-              <h2 className="text-2xl md:text-3xl font-bold tracking-tight">Blog e Notícias</h2>
-              <p className="text-muted-foreground mt-2">Fique por dentro das novidades do mercado imobiliário</p>
+              <h2 className="text-2xl md:text-3xl font-bold tracking-tight">Blog</h2>
+              <p className="text-muted-foreground mt-2">
+                Fique por dentro das novidades do mercado imobiliário
+              </p>
             </div>
-            <Button variant="outline" className="flex items-center gap-2" asChild>
+            <Button variant="outline" asChild>
               <Link href="/blog">
-                Ver Todos os Artigos
-                <ArrowRight className="h-4 w-4" />
+                Ver todos os posts
+                <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
           </div>
-          <Suspense fallback={<div style={{height:320}} className="w-full flex items-center justify-center text-muted-foreground">Carregando blog...</div>}>
+          <Suspense fallback={
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className="animate-pulse">
+                  <div className="bg-gray-200 rounded-lg h-48 mb-4"></div>
+                  <div className="space-y-2">
+                    <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+                    <div className="h-6 bg-gray-200 rounded w-3/4"></div>
+                    <div className="h-4 bg-gray-200 rounded w-full"></div>
+                    <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          }>
             <BlogPreview />
           </Suspense>
         </section>
-
-        <section className="bg-primary text-primary-foreground py-8 md:py-24 w-full mb-5" aria-labelledby="cta-title">
-          <div className="w-full px-0">
-            <div className="text-center max-w-3xl mx-auto">
-              <h2 id="cta-title" className="text-2xl md:text-3xl font-bold tracking-tight">Pronto para encontrar seu imóvel ideal?</h2>
-              <p className="mt-4 text-primary-foreground/90">
-                Entre em contato conosco e deixe-nos ajudar você a encontrar o imóvel perfeito para suas necessidades.
-              </p>
-              <div className="flex flex-col gap-3 w-full max-w-xs mx-auto sm:flex-row sm:justify-center sm:max-w-none mt-8">
-                <Button
-                  size="lg"
-                  variant="secondary"
-                  asChild
-                  className="w-full sm:w-auto min-h-[48px] min-w-[48px] px-6 py-4 bg-white text-[#007a68] font-bold border border-[#007a68] hover:bg-[#e6f4ea] focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-300 transition"
-                  aria-label="Fale conosco"
-                >
-                  <Link href="/contato">Fale Conosco</Link>
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="w-full sm:w-auto min-h-[48px] min-w-[48px] px-6 py-4 bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                  asChild
-                  aria-label="Ver imóveis disponíveis"
-                >
-                  <Link href="/imoveis/venda">Ver Imóveis</Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
       </main>
-      <Footer />
     </>
   )
 } 

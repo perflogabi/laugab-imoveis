@@ -10,7 +10,12 @@ module.exports = {
       center: true,
       padding: "1rem",
     },
-    extend: {},
+    extend: {
+      colors: {
+        primary: "oklch(0.205 0 0)",
+        secondary: "#30d10f",
+      },
+    },
   },
   plugins: [],
 } 

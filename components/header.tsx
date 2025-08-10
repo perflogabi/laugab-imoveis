@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Home, Building2, Key, FileText, Users, Phone, Menu, Search } from "lucide-react"
+import { Home, Building2, Key, FileText, Users, Phone, Menu } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -14,44 +14,49 @@ const whatsappLink = `https://wa.me/${whatsappNumber}`;
 
 export function Header() {
   const [isOpen, setIsOpen] = React.useState(false)
+  const [mounted, setMounted] = React.useState(false)
   const pathname = usePathname()
+
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const routes = [
     {
       href: "/",
       label: "Início",
       icon: Home,
-      active: pathname === "/",
+      active: mounted && pathname === "/",
     },
     {
       href: "/imoveis/venda",
       label: "Comprar",
       icon: Building2,
-      active: pathname === "/imoveis/venda" || pathname.startsWith("/imoveis/venda/"),
+      active: mounted && (pathname === "/imoveis/venda" || pathname.startsWith("/imoveis/venda/")),
     },
     {
       href: "/imoveis/aluguel",
       label: "Alugar",
       icon: Key,
-      active: pathname === "/imoveis/aluguel" || pathname.startsWith("/imoveis/aluguel/"),
+      active: mounted && (pathname === "/imoveis/aluguel" || pathname.startsWith("/imoveis/aluguel/")),
     },
     {
       href: "/blog",
       label: "Blog",
       icon: FileText,
-      active: pathname === "/blog" || pathname.startsWith("/blog/"),
+      active: mounted && (pathname === "/blog" || pathname.startsWith("/blog/")),
     },
     {
       href: "/sobre",
       label: "Sobre Nós",
       icon: Users,
-      active: pathname === "/sobre",
+      active: mounted && pathname === "/sobre",
     },
     {
       href: "/contato",
       label: "Contato",
       icon: Phone,
-      active: pathname === "/contato",
+      active: mounted && pathname === "/contato",
     },
   ]
 
@@ -146,12 +151,7 @@ export function Header() {
               WhatsApp
             </a>
           </nav>
-            <Button variant="outline" size="icon" asChild aria-label="Buscar">
-              <Link href="/busca">
-                <Search className="h-5 w-5" />
-                <span className="sr-only">Buscar</span>
-              </Link>
-            </Button>
+            
           </div>
         </div>
       </div>

@@ -1,94 +1,181 @@
-# Laugab Imóveis - WebApp de Alta Performance com WebOps
+# Laugab Imobiliária
 
-Bem-vindo ao projeto **Laugab Imóveis**, uma aplicação web desenvolvida com foco em performance, escalabilidade e excelência operacional, seguindo os princípios de **WebOps**. Este repositório é um exemplo prático de como a organização, o planejamento e as melhores práticas de desenvolvimento podem transformar a experiência do usuário e os resultados do produto final.
+Site institucional da Laugab Imobiliária desenvolvido com Next.js 14, TypeScript e Tailwind CSS.
 
----
+## 🚀 Funcionalidades
 
-## 🚀 O que é WebOps?
+### Páginas Principais
+- **Home**: Página inicial com destaque para imóveis em destaque
+- **Imóveis à Venda**: Listagem completa de imóveis disponíveis para compra
+- **Imóveis para Aluguel**: Listagem de imóveis disponíveis para locação
+- **Financiamento**: Informações sobre financiamento imobiliário
+- **Blog**: Artigos e notícias do setor imobiliário
+- **Sobre Nós**: Informações sobre a empresa
 
-**WebOps** (Web Operations) é uma abordagem que une desenvolvimento, operações e experiência do usuário para garantir que aplicações web sejam:
+### Páginas de Imóveis Individuais
+- **URLs dinâmicas**: `/imoveis/venda/[id]` para cada imóvel
+- **Galeria de imagens**: Visualizador interativo com modal
+- **Mapa interativo**: Localização do imóvel com Leaflet
+- **Informações detalhadas**: Características, diferenciais e dados técnicos
+- **Compartilhamento social**: Integração com redes sociais
+- **Imóveis similares**: Sugestões de outros imóveis do mesmo tipo
 
-- **Rápidas** (alta performance e baixo tempo de resposta)
-- **Confiáveis** (alta disponibilidade e resiliência)
-- **Escaláveis** (crescimento sustentável sem perda de qualidade)
-- **Fáceis de manter** (código limpo, modular e testável)
-- **Seguras** (boas práticas de segurança desde o início)
+## 🛠️ Tecnologias
 
-WebOps vai além do DevOps tradicional, pois foca especificamente nos desafios e oportunidades do ambiente web, promovendo uma cultura de colaboração contínua entre times de desenvolvimento, operações, design e produto.
+- **Next.js 14**: Framework React com App Router
+- **TypeScript**: Tipagem estática
+- **Tailwind CSS**: Estilização utilitária
+- **Lucide React**: Ícones
+- **Leaflet**: Mapas interativos
+- **React Leaflet**: Integração React com Leaflet
 
----
+## 📱 Performance e SEO
 
-## ⚠️ Desafios de Projetos Web sem WebOps
+### Otimizações Implementadas
+- **Geração estática**: Páginas pré-renderizadas para melhor performance
+- **Imagens otimizadas**: Next.js Image com lazy loading
+- **Metadados dinâmicos**: SEO otimizado para cada imóvel
+- **Schema.org**: Estrutura de dados para motores de busca
+- **Sitemap dinâmico**: Mapa do site atualizado automaticamente
+- **Robots.txt**: Configuração para crawlers
 
-Iniciar um projeto web sem organização e sem práticas de WebOps pode gerar:
+### Acessibilidade
+- **ARIA labels**: Navegação por leitores de tela
+- **Contraste adequado**: Cores seguindo padrões WCAG
+- **Navegação por teclado**: Suporte completo
+- **Semântica HTML**: Estrutura semântica correta
 
-- **Baixa performance**: páginas lentas, alto consumo de recursos e má experiência do usuário.
-- **Dificuldade de manutenção**: código desorganizado, difícil de escalar e propenso a bugs.
-- **Falta de visibilidade**: ausência de métricas, logs e monitoramento.
-- **Problemas de segurança**: vulnerabilidades não tratadas desde o início.
-- **Desalinhamento entre equipes**: retrabalho, atrasos e entregas insatisfatórias.
+### Componentes Criados
+- `PropertyGallery`: Galeria de imagens com modal
+- `PropertyMap`: Mapa interativo com coordenadas dinâmicas
+- `Breadcrumb`: Navegação hierárquica
+- `PropertySchema`: Schema.org para SEO
+- `SocialShare`: Compartilhamento social
+- `Skeleton`: Estados de loading
 
----
+## 🏗️ Estrutura do Projeto
 
-## ✅ Benefícios de um Planejamento com WebOps
-
-Ao adotar WebOps desde o início, você garante:
-
-- **Organização e padronização**: estrutura de pastas intuitiva, separação de responsabilidades e uso de boas práticas.
-- **Automação de processos**: CI/CD, testes automatizados, linting e formatação de código.
-- **Monitoramento e feedback contínuo**: métricas de performance, logs e alertas para rápida identificação de problemas.
-- **Entrega contínua de valor**: deploys frequentes, feedback rápido e evolução constante do produto.
-- **Satisfação do usuário**: experiência fluida, responsiva e acessível em qualquer dispositivo.
-
----
-
-## 💡 Como este projeto aplica WebOps na prática
-
-- **Next.js** para SSR/SSG, roteamento eficiente e otimização automática.
-- **Componentização**: cada parte da interface é modular, reutilizável e testável.
-- **Filtros avançados e responsivos**: experiência moderna e acessível para busca de imóveis.
-- **Testes automatizados**: unitários e de integração para garantir qualidade.
-- **CI/CD**: integração contínua para validação automática de código e deploy.
-- **Padronização de código**: uso de ESLint, .editorconfig e formatação automática.
-- **Organização de pastas**: `src`, `components`, `utils`, `tests` e mais.
-- **Documentação clara**: este README e comentários explicativos no código.
-
----
-
-## 📈 Resultados Promissores
-
-Projetos que seguem WebOps apresentam:
-
-- Redução de bugs e retrabalho
-- Deploys mais rápidos e seguros
-- Melhor experiência do usuário
-- Facilidade de escalar e evoluir o produto
-- Equipes mais alinhadas e produtivas
-
----
-
-## 👩‍💻 Como rodar o projeto
-
-```bash
-npm run dev
-# ou
-yarn dev
-# ou
-pnpm dev
-# ou
-bun dev
+```
+laugab-imoveis/
+├── app/
+│   ├── imoveis/
+│   │   └── venda/
+│   │       ├── [id]/
+│   │       │   ├── page.tsx          # Página dinâmica do imóvel
+│   │       │   ├── loading.tsx       # Estado de loading
+│   │       │   ├── error.tsx         # Página de erro
+│   │       │   ├── not-found.tsx     # Página 404
+│   │       │   └── PropertyMap.tsx   # Componente do mapa
+│   │       └── page.tsx              # Listagem de imóveis
+│   ├── sitemap.ts                    # Sitemap dinâmico
+│   └── robots.ts                     # Robots.txt
+├── components/
+│   ├── ui/                           # Componentes base
+│   ├── property-gallery.tsx          # Galeria de imagens
+│   ├── breadcrumb.tsx                # Navegação
+│   ├── property-schema.tsx           # Schema.org
+│   └── social-share.tsx              # Compartilhamento
+└── public/
+    └── assets/
+        └── imoveis/                  # Imagens dos imóveis
 ```
 
-Acesse [http://localhost:3000](http://localhost:3000) no seu navegador para ver o resultado.
+## 🚀 Como Executar
 
----
+1. **Instalar dependências**:
+   ```bash
+   npm install
+   ```
 
-## 📚 Para saber mais
+2. **Executar em desenvolvimento**:
+   ```bash
+   npm run dev
+   ```
 
-- [O que é WebOps? (artigo em inglês)](https://www.atlassian.com/devops/webops)
-- [Next.js Documentation](https://nextjs.org/docs)
-- [DevOps vs WebOps](https://www.contino.io/insights/devops-vs-webops)
+3. **Build para produção**:
+   ```bash
+   npm run build
+   ```
 
----
+4. **Executar em produção**:
+   ```bash
+   npm start
+   ```
 
-Sinta-se à vontade para contribuir, sugerir melhorias ou tirar dúvidas! Este projeto é um convite para você experimentar o poder do WebOps e transformar a forma como desenvolve aplicações web.
+## 📊 Dados dos Imóveis
+
+Os dados dos imóveis estão estruturados com as seguintes informações:
+
+```typescript
+interface Property {
+  id: string;
+  title: string;
+  price: number;
+  type: "venda" | "aluguel";
+  kind: string;
+  address: string;
+  fullAddress: string;
+  bedrooms: number;
+  bathrooms: number;
+  area: number;
+  imageUrl: string;
+  images: string[];
+  featured: boolean;
+  description: string;
+  features: string[];
+  coordinates: [number, number];
+  yearBuilt: number;
+  parkingSpaces: number;
+  condominiumFee: number;
+  iptu: number;
+}
+```
+
+## 🎯 URLs dos Imóveis
+
+Cada imóvel possui uma URL única seguindo o padrão:
+- `/imoveis/venda/1` - Casa com piscina
+- `/imoveis/venda/2` - Apartamento no centro
+- `/imoveis/venda/3` - Cobertura com vista
+- E assim por diante...
+
+## 🔧 Configurações
+
+### Variáveis de Ambiente
+Crie um arquivo `.env.local` com:
+```env
+NEXT_PUBLIC_SITE_URL=https://laugabimobiliaria.vercel.app
+```
+
+### Personalização
+- **Cores**: Edite `tailwind.config.js`
+- **Componentes**: Modifique arquivos em `components/ui/`
+- **Dados**: Atualize o array `properties` nas páginas
+
+## 📈 Próximas Melhorias
+
+- [ ] Integração com API real
+- [ ] Sistema de busca avançada
+- [ ] Filtros dinâmicos
+- [ ] Sistema de favoritos
+- [ ] Chat em tempo real
+- [ ] Área do cliente
+- [ ] Sistema de agendamento de visitas
+
+## 🤝 Contribuição
+
+1. Faça um fork do projeto
+2. Crie uma branch para sua feature
+3. Commit suas mudanças
+4. Push para a branch
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+## 📞 Contato
+
+- **Email**: contato@laugabimobiliaria.com.br
+- **Telefone**: (11) 9999-9999
+- **Site**: https://laugabimobiliaria.vercel.app

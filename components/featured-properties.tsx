@@ -12,6 +12,20 @@ const propertyImages = [
   "/assets/imoveis/imovel6.webp",
 ];
 
+// Tipo base para propriedades
+type Property = {
+  id: string
+  title: string
+  price: number
+  type: "venda" | "aluguel"
+  address: string
+  bedrooms: number
+  bathrooms: number
+  area: number
+  imageUrl: string
+  featured: boolean
+}
+
 // Dados simulados para demonstração
 const featuredProperties = {
   venda: [
@@ -164,57 +178,69 @@ const featuredProperties = {
   ],
 }
 
+// Componente otimizado para lista de propriedades
+const PropertyList = ({ properties }: { properties: Property[] }) => {
+  return (
+    <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {properties.map((property) => (
+        <li key={property.id} className="list-none">
+          <PropertyCard {...property} />
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+// Componente otimizado para botões de ação
+const ActionButtons = () => {
+  return (
+    <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+      <Button asChild>
+        <Link href="/imoveis/venda">Ver todos os imóveis à venda</Link>
+      </Button>
+      <Button asChild variant="outline">
+        <Link href="/imoveis/aluguel">Ver todos os imóveis para alugar</Link>
+      </Button>
+    </div>
+  )
+}
+
 export function FeaturedProperties() {
   const vendaList = useMemo(() => featuredProperties.venda, [])
   const aluguelList = useMemo(() => featuredProperties.aluguel, [])
+  
   return (
     <Tabs defaultValue="venda" className="w-full">
       <TabsList className="w-full max-w-md mx-auto mb-8">
-        <TabsTrigger value="venda" className="flex-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-md" aria-controls="venda-section-title">
+        <TabsTrigger 
+          value="venda" 
+          className="flex-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-md" 
+          aria-controls="venda-section-title"
+        >
           Imóveis à Venda
         </TabsTrigger>
-        <TabsTrigger value="aluguel" className="flex-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-md" aria-controls="aluguel-section-title">
+        <TabsTrigger 
+          value="aluguel" 
+          className="flex-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-md" 
+          aria-controls="aluguel-section-title"
+        >
           Imóveis para Aluguel
         </TabsTrigger>
       </TabsList>
+      
       <TabsContent value="venda" role="tabpanel" aria-labelledby="venda-section-title">
         <section aria-labelledby="venda-section-title">
           <h2 id="venda-section-title" className="sr-only">Imóveis em destaque à venda</h2>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {vendaList.map((property) => (
-              <li key={property.id} className="list-none">
-                <PropertyCard {...property} />
-              </li>
-          ))}
-          </ul>
-          <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
-            <Button asChild>
-              <Link href="/imoveis/venda">Ver todos os imóveis à venda</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/imoveis/aluguel">Ver todos os imóveis para alugar</Link>
-            </Button>
-        </div>
+          <PropertyList properties={vendaList} />
+          <ActionButtons />
         </section>
       </TabsContent>
+      
       <TabsContent value="aluguel" role="tabpanel" aria-labelledby="aluguel-section-title">
         <section aria-labelledby="aluguel-section-title">
           <h2 id="aluguel-section-title" className="sr-only">Imóveis em destaque para aluguel</h2>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {aluguelList.map((property) => (
-              <li key={property.id} className="list-none">
-                <PropertyCard {...property} />
-              </li>
-          ))}
-          </ul>
-          <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
-            <Button asChild>
-              <Link href="/imoveis/venda">Ver todos os imóveis à venda</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/imoveis/aluguel">Ver todos os imóveis para alugar</Link>
-            </Button>
-        </div>
+          <PropertyList properties={aluguelList} />
+          <ActionButtons />
         </section>
       </TabsContent>
     </Tabs>
